@@ -88,9 +88,12 @@
                 const url = `https://wa.me/${phoneNumber}`;
                 window.open(url, '_blank'); // Open WhatsApp in a new tab
             } else {
-                alert('Please enter a valid phone number.');
+                alert('Por favor ingrese un número de teléfono válido.');
             }
         });
+
+        // Ensure the input field is focused and ready for pasting
+        document.getElementById('phoneNumber').focus();
     </script>
 </body>
 </html>
