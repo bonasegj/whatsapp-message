@@ -4,13 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Enviar Mensaje por WhatsApp</title>
-    <!-- Open Graph Meta Tags for Better Link Preview -->
+    <!-- Favicon para el acceso directo en Android -->
+    <link rel="icon" type="image/png" href="https://via.placeholder.com/64.png?text=WA">
+    <!-- Meta Etiquetas Open Graph para una mejor vista previa -->
     <meta property="og:title" content="Enviar Mensaje por WhatsApp">
     <meta property="og:description" content="Envía fácilmente un mensaje de WhatsApp a cualquier número, incluso si no está en tus contactos.">
     <meta property="og:image" content="https://via.placeholder.com/400x200.png?text=WhatsApp+Message+Tool">
     <meta property="og:url" content="https://yourwebsite.com/whatsapp-message">
     <meta property="og:type" content="website">
-    <!-- Styles -->
+    <!-- Estilos -->
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -33,7 +35,7 @@
             margin: 5px 0 15px;
             border: 1px solid #ccc;
             border-radius: 5px;
-            font-size: 16px; /* Larger font for better mobile experience */
+            font-size: 16px; /* Fuente más grande para mejor experiencia en móviles */
         }
         input[type="submit"] {
             padding: 10px 20px;
@@ -42,8 +44,8 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            margin-top: 20px; /* Added margin for blank line */
-            font-size: 16px; /* Larger font for better mobile experience */
+            margin-top: 20px; /* Margen superior para separación */
+            font-size: 16px; /* Fuente más grande para mejor experiencia en móviles */
         }
         input[type="submit"]:hover {
             background-color: #128C7E;
@@ -62,57 +64,59 @@
         <h1>Enviar Mensaje por WhatsApp</h1>
         <p>Ingresa los detalles del número para enviar un mensaje por WhatsApp:</p>
         <form id="whatsappForm">
-            <!-- Country Code Input -->
-            <label for="countryCode">Código de País (por ejemplo, 54):</label>
-            <div class="input-group">
-                <input type="text" id="countryCode" placeholder="Código de País" value="54" required>
-                <input type="text" id="areaCode" placeholder="Código de Área" value="11" required>
-            </div>
-            <!-- Area Code Input -->
-            <label for="areaCode">Código de Área (por ejemplo, 11):</label>
-            <!-- Phone Number Input -->
-            <label for="phoneNumber">Número de Teléfono (por ejemplo, 1234567890):</label>
+            <!-- Código de País -->
+            <label for="countryCode">Código de País:</label>
+            <input type="text" id="countryCode" placeholder="Código de País" value="54" required>
+
+            <!-- Código de Área -->
+            <label for="areaCode">Código de Área:</label>
+            <input type="text" id="areaCode" placeholder="Código de Área" value="11" required>
+
+            <!-- Número de Teléfono -->
+            <label for="phoneNumber">Número de Teléfono:</label>
             <input type="text" id="phoneNumber" placeholder="Número de Teléfono" required>
+
+            <!-- Botón de Enviar -->
             <input type="submit" value="Enviar Mensaje">
         </form>
     </div>
 
     <script>
         document.getElementById('whatsappForm').addEventListener('submit', function(event) {
-            event.preventDefault(); // Prevent form submission
+            event.preventDefault(); // Evitar el envío del formulario
 
-            // Get values from input fields
+            // Obtener valores de los campos
             let countryCode = document.getElementById('countryCode').value.trim();
             let areaCode = document.getElementById('areaCode').value.trim();
             let phoneNumber = document.getElementById('phoneNumber').value.trim();
 
-            // Remove all non-numeric characters (spaces, dashes, parentheses, etc.)
+            // Eliminar todos los caracteres no numéricos (espacios, guiones, paréntesis, etc.)
             phoneNumber = phoneNumber.replace(/\D/g, '');
 
-            // Validate inputs
+            // Validar los campos
             if (!countryCode || !areaCode || !phoneNumber) {
                 alert('Por favor, completa todos los campos.');
                 return;
             }
 
-            // Logic to append country and area codes based on the length of the phone number
+            // Lógica para agregar códigos de país y área según la longitud del número
             let fullPhoneNumber = phoneNumber;
 
             if (phoneNumber.length <= 8) {
-                // Append area code and country code for numbers <= 8 digits
+                // Agregar código de área y país para números de 8 dígitos o menos
                 fullPhoneNumber = countryCode + areaCode + phoneNumber;
             } else if (phoneNumber.length <= 10) {
-                // Append only country code for numbers <= 10 digits
+                // Agregar solo el código de país para números de 10 dígitos o menos
                 fullPhoneNumber = countryCode + phoneNumber;
             }
-            // If the number is > 10 digits, use it as is (no appending)
+            // Si el número tiene más de 10 dígitos, se usa tal cual (sin agregar códigos)
 
-            // Open WhatsApp with the full phone number
+            // Abrir WhatsApp con el número completo
             const url = `https://wa.me/${fullPhoneNumber}`;
-            window.open(url, '_blank'); // Open WhatsApp in a new tab
+            window.open(url, '_blank'); // Abrir WhatsApp en una nueva pestaña
         });
 
-        // Ensure the input field is focused and ready for pasting
+        // Enfocar el campo de número de teléfono al cargar la página
         document.getElementById('phoneNumber').focus();
     </script>
 </body>
