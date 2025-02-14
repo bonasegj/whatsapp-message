@@ -1,9 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mandar mensaje de WhatsApp</title>
+    <title>Enviar Mensaje por WhatsApp</title>
+    <!-- Open Graph Meta Tags for Better Link Preview -->
+    <meta property="og:title" content="Enviar Mensaje por WhatsApp">
+    <meta property="og:description" content="Envía fácilmente un mensaje de WhatsApp a cualquier número, incluso si no está en tus contactos.">
+    <meta property="og:image" content="https://via.placeholder.com/400x200.png?text=WhatsApp+Message+Tool">
+    <meta property="og:url" content="https://yourwebsite.com/whatsapp-message">
+    <meta property="og:type" content="website">
+    <!-- Styles -->
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -14,47 +21,19 @@
             margin: 0 auto;
             text-align: center;
         }
-        input[type="text"] {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        input[type="submit"] {
-            padding: 10px 20px;
-            background-color: #25D366;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        input[type="submit"]:hover {
-            background-color: #128C7E;
-        }
-    </style>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mandar mensaje de WhatsApp</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 50px;
-        }
-        .container {
-            max-width: 400px;
-            margin: 0 auto;
-            text-align: center;
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            font-weight: bold;
+            text-align: left;
         }
         input[type="text"] {
             width: 100%;
             padding: 10px;
-            margin: 10px 0;
+            margin: 5px 0 15px;
             border: 1px solid #ccc;
             border-radius: 5px;
+            font-size: 16px; /* Larger font for better mobile experience */
         }
         input[type="submit"] {
             padding: 10px 20px;
@@ -64,32 +43,73 @@
             border-radius: 5px;
             cursor: pointer;
             margin-top: 20px; /* Added margin for blank line */
+            font-size: 16px; /* Larger font for better mobile experience */
         }
         input[type="submit"]:hover {
             background-color: #128C7E;
+        }
+        .input-group {
+            display: flex;
+            gap: 10px;
+        }
+        .input-group input {
+            flex: 1;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Mandar mensaje de WhatsApp</h1>
-        <p>Ingrese el número de teléfono con código de país pero sin el signo más:</p>
+        <h1>Enviar Mensaje por WhatsApp</h1>
+        <p>Ingresa los detalles del número para enviar un mensaje por WhatsApp:</p>
         <form id="whatsappForm">
-            <input type="text" id="phoneNumber" placeholder="Ejemplo: 541133336666" required>
-            <input type="submit" value="Abrir WhatsApp">
+            <!-- Country Code Input -->
+            <label for="countryCode">Código de País (por ejemplo, 54):</label>
+            <div class="input-group">
+                <input type="text" id="countryCode" placeholder="Código de País" value="54" required>
+                <input type="text" id="areaCode" placeholder="Código de Área" value="11" required>
+            </div>
+            <!-- Area Code Input -->
+            <label for="areaCode">Código de Área (por ejemplo, 11):</label>
+            <!-- Phone Number Input -->
+            <label for="phoneNumber">Número de Teléfono (por ejemplo, 1234567890):</label>
+            <input type="text" id="phoneNumber" placeholder="Número de Teléfono" required>
+            <input type="submit" value="Enviar Mensaje">
         </form>
     </div>
 
     <script>
         document.getElementById('whatsappForm').addEventListener('submit', function(event) {
             event.preventDefault(); // Prevent form submission
-            const phoneNumber = document.getElementById('phoneNumber').value.trim();
-            if (phoneNumber) {
-                const url = `https://wa.me/${phoneNumber}`;
-                window.open(url, '_blank'); // Open WhatsApp in a new tab
-            } else {
-                alert('Por favor ingrese un número de teléfono válido.');
+
+            // Get values from input fields
+            let countryCode = document.getElementById('countryCode').value.trim();
+            let areaCode = document.getElementById('areaCode').value.trim();
+            let phoneNumber = document.getElementById('phoneNumber').value.trim();
+
+            // Remove all non-numeric characters (spaces, dashes, parentheses, etc.)
+            phoneNumber = phoneNumber.replace(/\D/g, '');
+
+            // Validate inputs
+            if (!countryCode || !areaCode || !phoneNumber) {
+                alert('Por favor, completa todos los campos.');
+                return;
             }
+
+            // Logic to append country and area codes based on the length of the phone number
+            let fullPhoneNumber = phoneNumber;
+
+            if (phoneNumber.length <= 8) {
+                // Append area code and country code for numbers <= 8 digits
+                fullPhoneNumber = countryCode + areaCode + phoneNumber;
+            } else if (phoneNumber.length <= 10) {
+                // Append only country code for numbers <= 10 digits
+                fullPhoneNumber = countryCode + phoneNumber;
+            }
+            // If the number is > 10 digits, use it as is (no appending)
+
+            // Open WhatsApp with the full phone number
+            const url = `https://wa.me/${fullPhoneNumber}`;
+            window.open(url, '_blank'); // Open WhatsApp in a new tab
         });
 
         // Ensure the input field is focused and ready for pasting
